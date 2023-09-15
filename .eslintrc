@@ -1,23 +1,39 @@
 {
     "root": true,
     "parser": "@typescript-eslint/parser",
-    "env": { "node": true },
+    "parserOptions": {
+        "sourceType": "module",
+        "extraFileExtensions": [".svelte"]
+    },
+    "env": {
+        "node": true,
+        "browser": true
+    },
     "plugins": [
-      "@typescript-eslint"
+        "@typescript-eslint",
+        "svelte"
     ],
     "extends": [
-      "eslint:recommended",
-      "plugin:@typescript-eslint/eslint-recommended",
-      "plugin:@typescript-eslint/recommended"
-    ], 
-    "parserOptions": {
-        "sourceType": "module"
-    },
+        "eslint:recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:svelte/recommended"
+    ],
     "rules": {
-      "no-unused-vars": "off",
-      "@typescript-eslint/no-unused-vars": ["error", { "args": "none" }],
-      "@typescript-eslint/ban-ts-comment": "off",
-      "no-prototype-builtins": "off",
-      "@typescript-eslint/no-empty-function": "off"
-    } 
-  }
+        "no-unused-vars": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-unused-vars": ["error", { "args": "none" }],
+        "@typescript-eslint/ban-ts-comment": "off",
+        "no-prototype-builtins": "off",
+        "@typescript-eslint/no-empty-function": "off"
+    },
+    "overrides": [
+        {
+            "files": ["*.svelte"],
+            "parser": "svelte-eslint-parser",
+            "parserOptions": {
+                "parser": "@typescript-eslint/parser"
+            }
+        }
+    ]
+}

@@ -1,28 +1,35 @@
 import path from 'path';
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 import autoPreprocess from 'svelte-preprocess';
 import builtins from 'builtin-modules';
 
 const prod = (process.argv[2] === 'production');
 
-export default defineConfig(() => {
+export default defineConfig(({ mode }) => {
+    const env = loadEnv(mode, process.cwd(), '')
+
     return {
         plugins: [
             svelte({
                 preprocess: autoPreprocess()
-            })
+            }),
+            viteStaticCopy({
+                targets: [
+                  {
+                    src: path.resolve(__dirname) + '/manifest.json',
+                    dest: './',
+                  },
+                ],
+              }),
         ],
         watch: !prod,
         build: {
             sourcemap: prod ? false : 'inline',
             minify: prod,
-            // Use Vite lib mode https://vitejs.dev/guide/build.html#library-mode
-            commonjsOptions: {
-                ignoreTryCatch: false,
-            },
             lib: {
-                entry: path.resolve(__dirname, './src/starterIndex.ts'),
+                entry: path.resolve(__dirname, './src/main.ts'),
                 formats: ['cjs'],
             },
             css: {},
@@ -63,8 +70,8 @@ export default defineConfig(() => {
                 ],
             },
             // Use root as the output dir
-            emptyOutDir: false,
-            outDir: '.',
+            emptyOutDir: true,
+            outDir: env.VITE_OUT_DIR ?? './dist',
         },
     }
 });

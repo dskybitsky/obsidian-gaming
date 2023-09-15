@@ -1,7 +1,7 @@
 {
-    "name": "obsidian-svelte-starter",
-    "version": "1.0.3",
-    "description": "A plugin development template for devs who want to use svelte in Obsidian.",
+    "name": "skybitsky-gaming",
+    "version": "0.0.1",
+    "description": "A plugin for managing games collection/backlog.",
     "main": "main.js",
     "scripts": {
         "lint": "eslint . --ext .ts",
@@ -10,22 +10,28 @@
         "bumpversion": "node version-bump.mjs && git add manifest.json versions.json"
     },
     "keywords": [],
-    "author": "Quorafind",
+    "author": "Skybitsky",
     "devDependencies": {
-        "@sveltejs/vite-plugin-svelte": "^1.0.1",
-        "@tsconfig/svelte": "^3.0.0",
+        "@sveltejs/vite-plugin-svelte": "^2.4.6",
+        "@tsconfig/svelte": "^5.0.2",
         "@types/node": "^16.11.6",
-        "@typescript-eslint/eslint-plugin": "5.32.0",
-        "@typescript-eslint/parser": "5.32.0",
+        "@typescript-eslint/eslint-plugin": "^6.7.0",
+        "@typescript-eslint/parser": "^6.7.0",
         "builtin-modules": "3.3.0",
         "eslint": "^8.21.0",
+        "eslint-plugin-svelte": "^2.33.1",
         "eslint-plugin-svelte3": "^4.0.0",
         "obsidian": "latest",
-        "svelte": "^3.49.0",
-        "svelte-check": "^2.8.0",
-        "svelte-preprocess": "^4.10.7",
-        "tslib": "2.4.0",
-        "typescript": "4.7.4",
-        "vite": "^3.0.0"
+        "obsidian-dataview": "^0.5.56",
+        "svelte": "^4.2.0",
+        "svelte-check": "^3.5.1",
+        "svelte-preprocess": "^5.0.4",
+        "tslib": "2.6.2",
+        "typescript": "5.2.2",
+        "vite": "^4.4.9",
+        "vite-plugin-static-copy": "^0.17.0"
+    },
+    "dependencies": {
+        "lucide-svelte": "^0.279.0"
     }
 }

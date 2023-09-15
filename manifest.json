@@ -1,10 +1,10 @@
 {
-	"id": "obsidian-svelte-starter",
-	"name": "Svelte Starter",
-	"version": "1.0.3",
+	"id": "skybitsky-gaming",
+	"name": "Skybitsky's Gaming",
+	"version": "0.0.1",
 	"minAppVersion": "0.12.0",
-	"description": "A plugin development template for devs who want to use svelte in Obsidian.",
-	"author": "Quorafind",
-	"authorUrl": "https://obsidian.md",
+	"description": "A plugin for managing games collection/backlog.",
+	"author": "Skybitsky",
+	"authorUrl": "https://github.com/dskybitsky",
 	"isDesktopOnly": false
 }
