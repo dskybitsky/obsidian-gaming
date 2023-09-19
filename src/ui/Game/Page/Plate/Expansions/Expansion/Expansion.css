@@ -1,0 +1,10 @@
+div.game-plate-expansion {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+
+div.game-plate-expansion img {
+    border-radius: 3px !important;
+    width: 30px !important;
+}

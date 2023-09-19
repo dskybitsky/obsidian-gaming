@@ -1,0 +1,8 @@
+div.game-plate {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    font-size: var(--nav-item-size);
+    font-weight: var(--nav-item-weight);
+    color: var(--nav-item-color);
+}

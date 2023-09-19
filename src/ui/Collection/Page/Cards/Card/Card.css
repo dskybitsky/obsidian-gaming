@@ -1,0 +1,13 @@
+div.collection-card {
+    display: flex;
+    flex-direction: column;
+    max-width: 200px;
+    overflow: hidden;
+    align-items: center;
+}
+
+div.collection-card .title {
+    line-height: 1.5;
+    padding: 2px 4px;
+    text-align: center;
+}

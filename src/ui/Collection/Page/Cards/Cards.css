@@ -1,0 +1,15 @@
+div.collection-cards {
+    line-height: 1;
+    font-size: calc(var(--table-text-size) * .9);
+    color: var(--text-muted);
+}
+
+div.collection-cards div.content {
+    clear: both;
+    padding: 0.5rem 0;
+    display: grid;
+    justify-content: space-around;
+    grid-template-columns: repeat(auto-fit, 140px);
+    grid-column-gap: 0.75rem;
+    grid-row-gap: 1.75rem;
+}

@@ -1,0 +1,9 @@
+div.collection-card-thumb {
+    position: relative;
+    text-align: center;
+}
+
+div.collection-card-thumb img {
+    cursor: pointer !important;
+    border-radius: 10px !important;
+}

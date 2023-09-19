@@ -1,0 +1,12 @@
+div.collection-card-thumb-status {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background-color: var(--game-icon-canvas-color);
+    border-radius: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4px;
+    color: white;
+}
