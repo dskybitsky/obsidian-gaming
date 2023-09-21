@@ -7,7 +7,7 @@ export interface RatingProps {
 }
 
 export const Rating = ({ rating }: RatingProps) => (
-    <Block label="Status">
+    <Block label="Rating">
         <RatingElement rating={rating} />
     </Block>
 );
