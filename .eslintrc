@@ -3,7 +3,7 @@
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "sourceType": "module",
-        "extraFileExtensions": [".svelte"]
+        "project": ["./tsconfig.json"]
     },
     "env": {
         "node": true,
@@ -11,29 +11,33 @@
     },
     "plugins": [
         "@typescript-eslint",
-        "svelte"
+        "jsx-a11y"
     ],
     "extends": [
         "eslint:recommended",
-        "plugin:@typescript-eslint/eslint-recommended",
         "plugin:@typescript-eslint/recommended",
-        "plugin:svelte/recommended"
+        "plugin:@typescript-eslint/eslint-recommended",
+        "airbnb",
+        "airbnb-typescript"
     ],
     "rules": {
+        "indent": "off",
         "no-unused-vars": "off",
+        "no-prototype-builtins": "off",
+        "no-restricted-syntax": "off",
+        "import/prefer-default-export": "off",
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-unused-vars": ["error", { "args": "none" }],
         "@typescript-eslint/ban-ts-comment": "off",
-        "no-prototype-builtins": "off",
-        "@typescript-eslint/no-empty-function": "off"
+        "@typescript-eslint/no-empty-function": "off",
+        "@typescript-eslint/no-use-before-define": "off",
+        "@typescript-eslint/indent": ["error", 4],
+        "react/jsx-indent": ["error", 4],
+        "react/jsx-indent-props": ["error", 4],
+        "react/function-component-definition": ["error", {
+            "namedComponents": "arrow-function"
+        }],
+        "react/require-default-props": "off"
     },
-    "overrides": [
-        {
-            "files": ["*.svelte"],
-            "parser": "svelte-eslint-parser",
-            "parserOptions": {
-                "parser": "@typescript-eslint/parser"
-            }
-        }
-    ]
+    "overrides": []
 }

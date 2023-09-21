@@ -1,6 +1,6 @@
 div.collection-cards {
     line-height: 1;
-    font-size: calc(var(--table-text-size) * .9);
+    font-size: calc(var(--table-text-size) * 0.9);
     color: var(--text-muted);
 }
 

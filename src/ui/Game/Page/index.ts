@@ -1,2 +1,2 @@
-export * from "./Page";
-export * from "./Plate";
+export * from './Page';
+export * from './Plate';

@@ -1,23 +1,22 @@
-import React from "react";
-import { Block } from "../Block";
+import React from 'react';
+import { Block } from '../Block';
+import './List.css';
 
 export interface ListBlockProps {
-    label: string,
-    children?: React.ReactNode[],
+    label: string;
+    children?: React.ReactNode[];
 }
 
-import "./List.css"
-
-export const List = ({ label, children }: ListBlockProps) => {
-    return <Block label={ label } lineBreak={ true }>
+export const List = ({ label, children }: ListBlockProps) => (
+    <Block label={label} lineBreak>
         <ul>
-            { children.map((child, index) => {
+            {children.map((child, index) => {
                 const key = typeof child === 'object' && 'key' in child
                     ? child.key
-                    : index
+                    : index;
 
-                return <li key={ key }>{ child }</li>
-            }) }
+                return <li key={key}>{child}</li>;
+            })}
         </ul>
     </Block>
-}
+);

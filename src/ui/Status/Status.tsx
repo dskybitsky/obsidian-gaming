@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
     Award,
     Calendar,
@@ -11,58 +11,64 @@ import {
     Square,
 } from 'lucide-react';
 
-import "./Status.css";
+import './Status.css';
 
 export interface StatusProps {
-    status: string,
-    withTitle?: boolean,
-    withIcon?: boolean
+    status: string;
+    withTitle?: boolean;
+    withIcon?: boolean;
 }
 
-export const Status = ({ status, withTitle = true, withIcon = true }: StatusProps) => {
-    return <span className="status">
-        { withTitle && <>{ toTitleCase(status) }</>  }
-        { withIcon && <Icon status={status} />}
+export const Status = ({
+    status,
+    withTitle = true,
+    withIcon = true,
+}: StatusProps) => (
+    <span className="status">
+        { withTitle && toTitleCase(status) }
+        { withIcon && <Icon status={status} /> }
     </span>
-};
+);
 
 const Icon = ({ status }: Pick<StatusProps, 'status'>) => {
     if (status === 'new') {
-        return <Plus />
+        return <Plus />;
     }
 
     if (status === 'stopped') {
-        return <Square />
+        return <Square />;
     }
 
     if (status === 'playing') {
-        return <Play />
+        return <Play />;
     }
 
     if (status === 'suspended') {
-        return <Pause />
+        return <Pause />;
     }
 
     if (status === 'evergreen') {
-        return <Leaf color="lawngreen" />
+        return <Leaf color="lawngreen" />;
     }
 
     if (status === 'finished') {
-        return <Check />
+        return <Check />;
     }
 
     if (status === 'completed') {
-        return <Award color="gold" />
+        return <Award color="gold" />;
     }
 
     if (status === 'released') {
-        return <PartyPopper />
+        return <PartyPopper />;
     }
 
     if (status === 'upcoming') {
-        return <Calendar />
+        return <Calendar />;
     }
-}
+
+    return undefined;
+};
 
 function toTitleCase(s: string): string {
     return s[0].toUpperCase() + s.slice(1).toLowerCase();

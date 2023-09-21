@@ -1,3 +1,2 @@
-export * from "./Gaming";
-export * from "./Gaming.types";
-
+export * from './Gaming';
+export * from './Gaming.types';
