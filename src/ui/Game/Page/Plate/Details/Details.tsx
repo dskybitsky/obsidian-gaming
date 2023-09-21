@@ -12,7 +12,7 @@ export interface DetailsProps {
 
 export const Details = ({ game }: DetailsProps) => (
     <div className="game-plate-details">
-        {game.platforms.length && (
+        {game.platforms.length > 0 && (
             <List label="Platforms">{game.platforms}</List>
         )}
         {game.timeSpent > 0 && (
