@@ -2,7 +2,7 @@ div.collection-card-thumb-time {
     position: absolute;
     top: 0.5rem;
     left: 0.5rem;
-    background-color: var(--game-icon-canvas-color);
+    background-color: var(--collection-card-thumb-canvas-color);
     border-radius: 3px;
     display: flex;
     justify-content: center;
