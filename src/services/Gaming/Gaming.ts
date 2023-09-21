@@ -1,10 +1,5 @@
-import type {
-    CollectionDto,
-    GameDto,
-    GamesGroupDto,
-} from "./Gaming.types";
-
-import { Reader } from 'skybitsky-common'
+import { Reader } from 'skybitsky-common';
+import type { CollectionDto, GameDto, GamesGroupDto } from './Gaming.types';
 
 export interface GamingInterface {
     getCollection(path: string): CollectionDto | undefined;
@@ -22,7 +17,7 @@ export class Gaming implements GamingInterface {
     constructor(
         protected reader: Reader,
         protected rootPath: string,
-    ) { }
+    ) {}
 
     getCollection(path: string): CollectionDto | undefined {
         const page = this.reader.getPage(path);
@@ -31,12 +26,12 @@ export class Gaming implements GamingInterface {
             return undefined;
         }
 
-        const name = this.getName(page);
+        const name = Gaming.getName(page);
 
         return {
             name,
             title: page.title ?? name,
-        }
+        };
     }
 
     getGames(
@@ -46,8 +41,9 @@ export class Gaming implements GamingInterface {
         groupBy?: (game: GameDto) => unknown,
         groupSort?: (group: GamesGroupDto) => unknown,
     ): GameDto[] | GamesGroupDto[] {
-        let games = this.reader.getPagesByPathAtDepthRel(path)
-            .map((page) => this.createGame(page))
+        let games = this.reader
+            .getPagesByPathAtDepthRel(path)
+            .map((page) => this.createGame(page));
 
         if (filter) {
             games = games.filter(filter);
@@ -69,7 +65,7 @@ export class Gaming implements GamingInterface {
             return gamesGroups.array();
         }
 
-        return games.array()
+        return games.array();
     }
 
     getGame(path: string): GameDto | undefined {
@@ -83,26 +79,33 @@ export class Gaming implements GamingInterface {
     }
 
     protected createGame(page: Record<string, any>): GameDto {
-        const name = this.getName(page);
+        const name = Gaming.getName(page);
 
-        const expansions = (page.expansions ?? [])
-            .map((expansion: string|string[]|object) => {
+        const expansions = (page.expansions ?? []).map(
+            (expansion: string | string[] | object) => {
                 if (Array.isArray(expansion)) {
-                    return this.getGame(expansion[0][0])
+                    return this.getGame(expansion[0][0]);
                 }
 
                 if (typeof expansion === 'object') {
-                    return this.createGame(expansion)
+                    return this.createGame(expansion);
                 }
 
-                return this.createGame({ name: expansion })
-            });
+                return this.createGame({ name: expansion });
+            },
+        );
 
         const timeSpent = parseInt(page.timeSpent ?? 0, 10)
-            + expansions.reduce((sum: number, expansion: GameDto) => sum + expansion.timeSpent, 0);
+            + expansions.reduce(
+                (sum: number, expansion: GameDto) => sum + expansion.timeSpent,
+                0,
+            );
 
         const timeToBeat = parseInt(page.timeToBeat ?? 0, 10)
-            + expansions.reduce((sum: number, expansion: GameDto) => sum + expansion.timeToBeat, 0)
+            + expansions.reduce(
+                (sum: number, expansion: GameDto) => sum + expansion.timeToBeat,
+                0,
+            );
 
         const path = page.file?.path;
 
@@ -115,12 +118,14 @@ export class Gaming implements GamingInterface {
             timeToBeat,
             expansions,
             rating: page.rating ? parseFloat(page.rating) : undefined,
-            status: page.status ? page.status.toString().toLowerCase() : undefined,
+            status: page.status
+                ? page.status.toString().toLowerCase()
+                : undefined,
             path,
         };
     }
 
-    protected getName(page: Record<string, any>): string {
+    protected static getName(page: Record<string, any>): string {
         if (page.name) {
             return page.name;
         }
@@ -131,7 +136,7 @@ export class Gaming implements GamingInterface {
             }
 
             if (page.file.folder) {
-                return page.file.folder.split('/').slice(-1)[0] ?? ''
+                return page.file.folder.split('/').slice(-1)[0] ?? '';
             }
         }
 

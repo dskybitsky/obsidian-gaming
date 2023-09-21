@@ -4,7 +4,8 @@
     "description": "A plugin for managing games collection/backlog.",
     "main": "main.js",
     "scripts": {
-        "build": "rollup --config rollup.config.js --environment BUILD:production",
+        "lint": "eslint . --ext .ts,.tsx",
+        "build": "npm run lint && rollup --config rollup.config.js --environment BUILD:production",
         "dev": "rollup --config rollup.config.js -w"
     },
     "keywords": [],
@@ -15,19 +16,28 @@
         "@rollup/plugin-typescript": "^8.3.0",
         "@types/react": "^18.2.22",
         "@types/react-dom": "^18.2.7",
-        "obsidian": "latest",
-        "obsidian-dataview": "0.5.56",
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0",
+        "@typescript-eslint/eslint-plugin": "^6.7.2",
+        "@typescript-eslint/parser": "^6.7.2",
+        "eslint": "^8.49.0",
+        "eslint-config-airbnb": "^19.0.4",
+        "eslint-config-airbnb-typescript": "^17.1.0",
+        "eslint-plugin-import": "^2.28.1",
+        "eslint-plugin-jsx-a11y": "^6.7.1",
+        "eslint-plugin-react": "^7.33.2",
+        "prettier": "^3.0.3",
         "rollup": "^2.60.0",
         "rollup-plugin-copy": "^3.5.0",
-        "rollup-plugin-styles": "^4.0.0",
         "rollup-plugin-polyfill-node": "^0.6.2",
-        "skybitsky-common": "git+ssh://git@github.com:dskybitsky/obsidian-common.git#main",
+        "rollup-plugin-styles": "^4.0.0",
         "tslib": "^2.6.2",
         "typescript": "^4.4.4"
     },
     "dependencies": {
-        "lucide-react": "^0.279.0"
+        "obsidian": "latest",
+        "obsidian-dataview": "0.5.56",
+        "lucide-react": "^0.279.0",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "skybitsky-common": "git+ssh://git@github.com:dskybitsky/obsidian-common.git#main"
     }
 }

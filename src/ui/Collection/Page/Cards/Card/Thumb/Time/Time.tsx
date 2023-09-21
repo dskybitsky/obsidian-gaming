@@ -1,16 +1,23 @@
-import React from "react";
-import "./Time.css";
+import React from 'react';
+import './Time.css';
 
 export interface TimeProps {
-    timeSpent: number,
-    timeToBeat: number,
+    timeSpent: number;
+    timeToBeat: number;
 }
 
-export const Time = ({ timeSpent, timeToBeat }: TimeProps) => <div className="collection-card-thumb-time">
-    { timeSpent > 0
-        ? <>{ timeSpent }h</>
-        : (
-            timeToBeat > 0 ? <>{ timeToBeat }h</> : false
-        )
+export const Time = ({ timeSpent, timeToBeat }: TimeProps) => {
+    let message = '';
+
+    if (timeSpent > 0) {
+        message = `${timeSpent}h`;
+    } else if (timeToBeat > 0) {
+        message = `${timeToBeat}h`;
     }
-</div>
+
+    return (
+        <div className="collection-card-thumb-time">
+            { message }
+        </div>
+    );
+};

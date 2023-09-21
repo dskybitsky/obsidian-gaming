@@ -1,12 +1,12 @@
-import React from "react";
-import { GameDto } from "../../../../../services";
+import React from 'react';
+import { GameDto } from '../../../../../services';
 
-import "./Summary.css";
+import './Summary.css';
 
 export interface SummaryProps {
-    games: GameDto[],
-    hideTotalTimeSpent?: boolean,
-    hideTotalTimeToBeat?: boolean,
+    games: GameDto[];
+    hideTotalTimeSpent?: boolean;
+    hideTotalTimeToBeat?: boolean;
 }
 
 export const Summary = ({
@@ -14,23 +14,29 @@ export const Summary = ({
     hideTotalTimeSpent = false,
     hideTotalTimeToBeat = false,
 }: SummaryProps) => {
-    const totalItems = games.length
+    const totalItems = games.length;
 
-    let totalTimeSpent = 0
-    let totalTimeToBeat = 0
+    let totalTimeSpent = 0;
+    let totalTimeToBeat = 0;
 
-    for (let game of games) {
+    for (const game of games) {
         totalTimeSpent += game.timeSpent;
         totalTimeToBeat += game.timeToBeat;
     }
 
-    return <div className="collection-summary">
-        <span>Items: { totalItems }</span>
-        { !hideTotalTimeSpent && (totalTimeSpent > 0) && <span>
-            Time spent: { totalTimeSpent }h
-        </span> }
-        { !hideTotalTimeToBeat && (totalTimeToBeat > 0) && <span>
-            Time to beat: { totalTimeToBeat }h
-        </span> }
-    </div>
-}
+    const totalItemsMessage = `Items: ${totalItems}`;
+    const totalTimeSpentMessage = `Total spent: ${totalTimeSpent}h`;
+    const totalTimeToBeatMessage = `Total to beat: ${totalTimeToBeat}h`;
+
+    return (
+        <div className="collection-summary">
+            <span>{ totalItemsMessage }</span>
+            {!hideTotalTimeSpent && totalTimeSpent > 0 && (
+                <span>{ totalTimeSpentMessage }</span>
+            )}
+            {!hideTotalTimeToBeat && totalTimeToBeat > 0 && (
+                <span>{ totalTimeToBeatMessage }</span>
+            )}
+        </div>
+    );
+};

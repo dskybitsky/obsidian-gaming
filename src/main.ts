@@ -1,24 +1,32 @@
 import { App, Plugin } from 'obsidian';
 import type { MarkdownPostProcessorContext, PluginManifest } from 'obsidian';
 import { DataviewApi, getAPI as getDataviewApi } from 'obsidian-dataview';
-import { createRoot, Root } from "react-dom/client";
-import { createElement, ReactNode } from "react";
-import { Reader } from "skybitsky-common";
+import { createRoot, Root } from 'react-dom/client';
+import { createElement, ReactNode } from 'react';
+import { Reader } from 'skybitsky-common';
 import {
     Block,
     Game,
     Collection,
     CollectionOptions,
-} from "./ui";
-import { Gaming, GamingInterface } from "./services";
+} from './ui';
+import { Gaming, GamingInterface } from './services';
 
-const SBS_GAMING_GAME = CSS.escape("sbs:gaming:game");
-const SBS_GAMING_COLLECTION = CSS.escape("sbs:gaming:collection");
+const SBS_GAMING_GAME = CSS.escape('sbs:gaming:game');
+const SBS_GAMING_COLLECTION = CSS.escape('sbs:gaming:collection');
 
-declare module "obsidian" {
+declare module 'obsidian' {
     interface MetadataCache {
-        on(name: "dataview:index-ready", callback: () => void, ctx?: any): EventRef;
-        on(name: "dataview:metadata-change", callback: (type: string, page: any) => void, ctx?: any): EventRef;
+        on(
+            name: 'dataview:index-ready',
+            callback: () => void,
+            ctx?: any,
+        ): EventRef;
+        on(
+            name: 'dataview:metadata-change',
+            callback: (type: string, page: any) => void,
+            ctx?: any,
+        ): EventRef;
     }
 }
 
@@ -26,10 +34,13 @@ export default class GamingPlugin extends Plugin {
     settings: GamingPluginSettings = DEFAULT_SETTINGS;
 
     dataviewApi: DataviewApi;
+
     reader: Reader;
+
     gaming: GamingInterface;
 
     readonly rootsIndex: Map<string, Root> = new Map();
+
     readonly elementsFactoriesIndex: Map<Root, () => ReactNode> = new Map();
 
     constructor(app: App, manifest: PluginManifest) {
@@ -54,13 +65,16 @@ export default class GamingPlugin extends Plugin {
     }
 
     onunload() {
-        for (let [,root] of this.rootsIndex) {
+        for (const [, root] of this.rootsIndex) {
             root.unmount();
         }
     }
 
     async loadSettings() {
-        this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+        this.settings = {
+            ...DEFAULT_SETTINGS,
+            ...await this.loadData(),
+        };
     }
 
     async saveSettings() {
@@ -70,41 +84,51 @@ export default class GamingPlugin extends Plugin {
     protected registerMarkdownCodeBlockProcessors(): void {
         this.registerMarkdownCodeBlockProcessor(
             SBS_GAMING_GAME,
-            (_, container, context) => this.handleGameBlock(container, context)
+            (_, container, context) => this.handleGameBlock(container, context),
         );
 
         this.registerMarkdownCodeBlockProcessor(
             SBS_GAMING_COLLECTION,
-            (source, container, context) => this.handleCollectionBlock(source, container, context)
+            (source, container, context) => this.handleCollectionBlock(
+                source,
+                container,
+                context,
+            ),
         );
     }
 
     protected registerEvents(): void {
         this.registerEvent(
             this.app.metadataCache.on(
-                "dataview:index-ready",
+                'dataview:index-ready',
                 this.onDataviewIndexReady,
-                this
-            )
+                this,
+            ),
         );
 
         this.registerEvent(
             this.app.metadataCache.on(
-                "dataview:metadata-change",
+                'dataview:metadata-change',
                 this.onDataviewMetadataChange,
-                this
-            )
+                this,
+            ),
         );
     }
 
-    protected handleGameBlock(container: HTMLElement, context: MarkdownPostProcessorContext): void {
+    protected handleGameBlock(
+        container: HTMLElement,
+        context: MarkdownPostProcessorContext,
+    ): void {
         const root = createRoot(container);
 
         this.rootsIndex.set(context.sourcePath, root);
 
         const elementFactory = () => createElement(Block, {
             initialized: this.dataviewApi.index.initialized,
-        }, createElement(Game, { gaming: this.gaming, path: context.sourcePath }));
+        }, createElement(Game, {
+            gaming: this.gaming,
+            path: context.sourcePath,
+        }));
 
         this.elementsFactoriesIndex.set(root, elementFactory);
 
@@ -114,7 +138,7 @@ export default class GamingPlugin extends Plugin {
     protected handleCollectionBlock(
         source: string,
         container: HTMLElement,
-        context: MarkdownPostProcessorContext
+        context: MarkdownPostProcessorContext,
     ): void {
         const root = createRoot(container);
 
@@ -123,7 +147,7 @@ export default class GamingPlugin extends Plugin {
         }, createElement(Collection, {
             gaming: this.gaming,
             path: context.sourcePath,
-            options: this.parseCollectionOptions(source),
+            options: GamingPlugin.parseCollectionOptions(source),
         }));
 
         this.elementsFactoriesIndex.set(root, elementFactory);
@@ -131,9 +155,11 @@ export default class GamingPlugin extends Plugin {
         root.render(elementFactory());
     }
 
-    protected parseCollectionOptions(source: string): CollectionOptions | undefined {
+    protected static parseCollectionOptions(
+        source: string,
+    ): CollectionOptions | undefined {
         if (!source) {
-            return { }
+            return {};
         }
 
         try {
@@ -142,14 +168,17 @@ export default class GamingPlugin extends Plugin {
             return {
                 hideTotalTimeSpent: !!obj.hideTotalTimeSpent,
                 hideTotalTimeToBeat: !!obj.hideTotalTimeToBeat,
-            }
+            };
         } catch (e) {
+            // eslint-disable-next-line no-console
             console.warn(`Failed to parse block options: "${source}": ${e}`);
         }
+
+        return undefined;
     }
 
     protected onDataviewIndexReady() {
-        for (const [root,elementFactory] of this.elementsFactoriesIndex) {
+        for (const [root, elementFactory] of this.elementsFactoriesIndex) {
             root.render(elementFactory());
         }
     }
@@ -175,16 +204,16 @@ export default class GamingPlugin extends Plugin {
     }
 
     protected renderElements(): void {
-        for (const [root,elementFactory] of this.elementsFactoriesIndex) {
+        for (const [root, elementFactory] of this.elementsFactoriesIndex) {
             root.render(elementFactory());
         }
     }
 }
 
 interface GamingPluginSettings {
-    rootPath: string,
+    rootPath: string;
 }
 
 const DEFAULT_SETTINGS: GamingPluginSettings = {
-    rootPath: 'Gaming'
-}
+    rootPath: 'Gaming',
+};
