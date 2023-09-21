@@ -1,0 +1,7 @@
+div.collection-summary {
+    display: flex;
+    justify-content: flex-end;
+    font-size: var(--font-adaptive-smaller);
+    margin-block-end: 0.5rem;
+    gap: 1rem;
+}

@@ -1,15 +1,19 @@
 import { App, Plugin } from 'obsidian';
 import type { MarkdownPostProcessorContext, PluginManifest } from 'obsidian';
 import { DataviewApi, getAPI as getDataviewApi } from 'obsidian-dataview';
-import Game from "./ui/Game.svelte";
-import Collection from "./ui/Collection.svelte";
-import Gaming from "./service/Gaming";
-import DataviewReader from "./service/DataviewReader";
-import type { CollectionOptions } from "./types/ui";
-import './styles.css';
+import { createRoot, Root } from "react-dom/client";
+import { createElement, ReactNode } from "react";
+import { Reader } from "skybitsky-common";
+import {
+    Block,
+    Game,
+    Collection,
+    CollectionOptions,
+} from "./ui";
+import { Gaming, GamingInterface } from "./services";
 
-export const SBS_GAMING_GAME = CSS.escape("sbs:gaming:game");
-export const SBS_GAMING_COLLECTION = CSS.escape("sbs:gaming:collection");
+const SBS_GAMING_GAME = CSS.escape("sbs:gaming:game:r");
+const SBS_GAMING_COLLECTION = CSS.escape("sbs:gaming:collection:r");
 
 declare module "obsidian" {
     interface MetadataCache {
@@ -22,11 +26,11 @@ export default class GamingPlugin extends Plugin {
     settings: GamingPluginSettings = DEFAULT_SETTINGS;
 
     dataviewApi: DataviewApi;
-    dataviewReader: DataviewReader;
+    reader: Reader;
+    gaming: GamingInterface;
 
-    gaming: Gaming;
-
-    readonly blocksIndex: Map<string, Game | Collection> = new Map();
+    readonly rootsIndex: Map<string, Root> = new Map();
+    readonly elementsFactoriesIndex: Map<Root, () => ReactNode> = new Map();
 
     constructor(app: App, manifest: PluginManifest) {
         super(app, manifest);
@@ -38,13 +42,32 @@ export default class GamingPlugin extends Plugin {
         }
 
         this.dataviewApi = dataviewApi;
-        this.dataviewReader = new DataviewReader(this.dataviewApi);
-        this.gaming = new Gaming(this.dataviewReader, this.settings.rootPath);
+        this.reader = new Reader(this.dataviewApi);
+        this.gaming = new Gaming(this.reader, this.settings.rootPath);
     }
 
     async onload() {
         await this.loadSettings();
 
+        this.registerMarkdownCodeBlockProcessors();
+        this.registerEvents();
+    }
+
+    onunload() {
+        for (let [,root] of this.rootsIndex) {
+            root.unmount();
+        }
+    }
+
+    async loadSettings() {
+        this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+    }
+
+    async saveSettings() {
+        await this.saveData(this.settings);
+    }
+
+    protected registerMarkdownCodeBlockProcessors(): void {
         this.registerMarkdownCodeBlockProcessor(
             SBS_GAMING_GAME,
             (_, container, context) => this.handleGameBlock(container, context)
@@ -54,7 +77,9 @@ export default class GamingPlugin extends Plugin {
             SBS_GAMING_COLLECTION,
             (source, container, context) => this.handleCollectionBlock(source, container, context)
         );
+    }
 
+    protected registerEvents(): void {
         this.registerEvent(
             this.app.metadataCache.on(
                 "dataview:index-ready",
@@ -72,27 +97,18 @@ export default class GamingPlugin extends Plugin {
         );
     }
 
-    onunload() {
-
-    }
-
-    async loadSettings() {
-        this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
-    }
-
-    async saveSettings() {
-        await this.saveData(this.settings);
-    }
-
     protected handleGameBlock(container: HTMLElement, context: MarkdownPostProcessorContext): void {
-        this.blocksIndex.set(context.sourcePath, new Game({
-            props: {
-                initialized: this.dataviewApi.index.initialized,
-                gaming: this.gaming,
-                sourcePath: context.sourcePath,
-            },
-            target: container
-        }))
+        const root = createRoot(container);
+
+        this.rootsIndex.set(context.sourcePath, root);
+
+        const elementFactory = () => createElement(Block, {
+            initialized: this.dataviewApi.index.initialized,
+        }, createElement(Game, { gaming: this.gaming, path: context.sourcePath }));
+
+        this.elementsFactoriesIndex.set(root, elementFactory);
+
+        root.render(elementFactory());
     }
 
     protected handleCollectionBlock(
@@ -100,18 +116,22 @@ export default class GamingPlugin extends Plugin {
         container: HTMLElement,
         context: MarkdownPostProcessorContext
     ): void {
-        this.blocksIndex.set(context.sourcePath, new Collection({
-            props: {
-                initialized: this.dataviewApi.index.initialized,
-                gaming: this.gaming,
-                sourcePath: context.sourcePath,
-                options: this.parseCollectionOptions(source),
-            },
-            target: container
-        }))
+        const root = createRoot(container);
+
+        const elementFactory = () => createElement(Block, {
+            initialized: this.dataviewApi.index.initialized,
+        }, createElement(Collection, {
+            gaming: this.gaming,
+            path: context.sourcePath,
+            options: this.parseCollectionOptions(source),
+        }));
+
+        this.elementsFactoriesIndex.set(root, elementFactory);
+
+        root.render(elementFactory());
     }
 
-    protected parseCollectionOptions(source: string): CollectionOptions {
+    protected parseCollectionOptions(source: string): CollectionOptions | undefined {
         if (!source) {
             return { }
         }
@@ -125,13 +145,12 @@ export default class GamingPlugin extends Plugin {
             }
         } catch (e) {
             console.warn(`Failed to parse block options: "${source}": ${e}`);
-            return { }
         }
     }
 
     protected onDataviewIndexReady() {
-        for (const [,block] of this.blocksIndex) {
-            block.$set({ initialized: true });
+        for (const [root,elementFactory] of this.elementsFactoriesIndex) {
+            root.render(elementFactory());
         }
     }
 
@@ -140,14 +159,25 @@ export default class GamingPlugin extends Plugin {
             return;
         }
 
-        const block = this.blocksIndex.get(page.path);
+        const root = this.rootsIndex.get(page.path);
 
-        if (!block) {
+        if (!root) {
             return;
         }
 
-        block.$set({ initialized: false });
-        block.$set({ initialized: this.dataviewApi.index.initialized });
+        const elementFactory = this.elementsFactoriesIndex.get(root);
+
+        if (!elementFactory) {
+            return;
+        }
+
+        root.render(elementFactory());
+    }
+
+    protected renderElements(): void {
+        for (const [root,elementFactory] of this.elementsFactoriesIndex) {
+            root.render(elementFactory());
+        }
     }
 }
 

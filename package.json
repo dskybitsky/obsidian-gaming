@@ -4,34 +4,30 @@
     "description": "A plugin for managing games collection/backlog.",
     "main": "main.js",
     "scripts": {
-        "lint": "eslint . --ext .ts",
-        "dev": "npm run lint && vite build --watch",
-        "build": "npx svelte-check && vite build",
-        "bumpversion": "node version-bump.mjs && git add manifest.json versions.json"
+        "build": "rollup --config rollup.config.js --environment BUILD:production",
+        "dev": "rollup --config rollup.config.js -w"
     },
     "keywords": [],
     "author": "Skybitsky",
     "devDependencies": {
-        "@sveltejs/vite-plugin-svelte": "^2.4.6",
-        "@tsconfig/svelte": "^5.0.2",
-        "@types/node": "^16.11.6",
-        "@typescript-eslint/eslint-plugin": "^6.7.0",
-        "@typescript-eslint/parser": "^6.7.0",
-        "builtin-modules": "3.3.0",
-        "eslint": "^8.21.0",
-        "eslint-plugin-svelte": "^2.33.1",
-        "eslint-plugin-svelte3": "^4.0.0",
+        "@rollup/plugin-commonjs": "^21.0.1",
+        "@rollup/plugin-node-resolve": "^13.0.6",
+        "@rollup/plugin-typescript": "^8.3.0",
+        "@types/react": "^18.2.22",
+        "@types/react-dom": "^18.2.7",
         "obsidian": "latest",
         "obsidian-dataview": "0.5.56",
-        "svelte": "^4.2.0",
-        "svelte-check": "^3.5.1",
-        "svelte-preprocess": "^5.0.4",
-        "tslib": "2.6.2",
-        "typescript": "5.2.2",
-        "vite": "^4.4.9",
-        "vite-plugin-static-copy": "^0.17.0"
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "rollup": "^2.60.0",
+        "rollup-plugin-copy": "^3.5.0",
+        "rollup-plugin-styles": "^4.0.0",
+        "rollup-plugin-polyfill-node": "^0.6.2",
+        "skybitsky-common": "git+ssh://git@github.com:dskybitsky/obsidian-common.git#main",
+        "tslib": "^2.6.2",
+        "typescript": "^4.4.4"
     },
     "dependencies": {
-        "lucide-svelte": "^0.279.0"
+        "lucide-react": "^0.279.0"
     }
 }

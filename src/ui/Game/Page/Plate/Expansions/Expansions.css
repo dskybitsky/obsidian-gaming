@@ -1,0 +1,12 @@
+div.game-plate-expansions {
+    flex: 1 1 0;
+}
+
+div.game-plate-expansions ul {
+    padding-left: 1rem !important;
+}
+
+div.game-plate-expansions li {
+    margin: 0.5rem 0;
+    list-style-type: none;
+}
