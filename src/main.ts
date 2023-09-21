@@ -12,8 +12,8 @@ import {
 } from "./ui";
 import { Gaming, GamingInterface } from "./services";
 
-const SBS_GAMING_GAME = CSS.escape("sbs:gaming:game:r");
-const SBS_GAMING_COLLECTION = CSS.escape("sbs:gaming:collection:r");
+const SBS_GAMING_GAME = CSS.escape("sbs:gaming:game");
+const SBS_GAMING_COLLECTION = CSS.escape("sbs:gaming:collection");
 
 declare module "obsidian" {
     interface MetadataCache {

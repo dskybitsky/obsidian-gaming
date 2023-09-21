@@ -1,6 +1,7 @@
 div.collection-card-thumb {
     position: relative;
     text-align: center;
+    --collection-card-thumb-canvas-color: rgb(0, 0, 0, .5);
 }
 
 div.collection-card-thumb img {

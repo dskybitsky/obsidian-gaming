@@ -39,7 +39,7 @@ export const Page = ({
     </ToolBar>
     <h1>{ collection.title }</h1>
     { gamesGroups && gamesGroups.map((group) => <>
-        <h4>{ group.id.name }</h4>
+        <h4>{ group.id }</h4>
         <Cards
             games={ group.games }
             hideTotalTimeSpent={ options.hideTotalTimeSpent }
