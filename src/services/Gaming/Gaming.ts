@@ -117,6 +117,7 @@ export class Gaming implements GamingInterface {
             timeToBeat,
             expansions,
             rating: page.rating ? parseFloat(page.rating) : undefined,
+            edition: page.edition,
             status: page.status
                 ? page.status.toString().toLowerCase()
                 : undefined,

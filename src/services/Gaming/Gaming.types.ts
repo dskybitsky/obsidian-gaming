@@ -17,6 +17,7 @@ export type GameDto = {
     timeToBeat: number;
     expansions: GameDto[];
     rating?: number;
+    edition?: string;
     status?: string;
     path?: string;
 };

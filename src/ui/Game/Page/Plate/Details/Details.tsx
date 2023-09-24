@@ -12,6 +12,9 @@ export interface DetailsProps {
 
 export const Details = ({ game }: DetailsProps) => (
     <div className="game-plate-details">
+        {game.edition && (
+            <Text label="Edition" text={game.edition} />
+        )}
         {game.platforms.length > 0 && (
             <List label="Platforms">{game.platforms}</List>
         )}
