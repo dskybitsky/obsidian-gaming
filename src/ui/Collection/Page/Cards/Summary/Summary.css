@@ -1,4 +1,4 @@
-div.collection-summary {
+.sbs-gaming div.collection-summary {
     display: flex;
     justify-content: flex-end;
     font-size: var(--font-adaptive-smaller);

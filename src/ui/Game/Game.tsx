@@ -1,7 +1,7 @@
 import React from 'react';
+import { setActiveTabTitle } from 'skybitsky-common';
 import { GamingInterface } from '../../services';
 import { Page } from './Page';
-import { setActiveTabTitle } from '../../utils';
 
 export interface GameProps {
     gaming: GamingInterface;
@@ -11,7 +11,7 @@ export interface GameProps {
 export const Game = ({ gaming, path }: GameProps) => {
     const game = gaming.getGame(path);
 
-    setActiveTabTitle(document, game.title);
+    setActiveTabTitle(game.title);
 
     return <Page game={game} />;
 };

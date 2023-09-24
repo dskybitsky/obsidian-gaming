@@ -16,7 +16,6 @@ export interface GamingInterface {
 export class Gaming implements GamingInterface {
     constructor(
         protected reader: Reader,
-        protected rootPath: string,
     ) {}
 
     getCollection(path: string): CollectionDto | undefined {

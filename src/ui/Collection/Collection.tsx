@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { setActiveTabTitle } from 'skybitsky-common';
 import { GameDto, GamesGroupDto, GamingInterface } from '../../services';
-import { setActiveTabTitle } from '../../utils';
 import { Page } from './Page';
 import { CollectionOptions } from './Collection.types';
 
@@ -55,7 +55,7 @@ export const Collection = ({ gaming, path, options }: CollectionProps) => {
         ) as GamesGroupDto[])
         : undefined;
 
-    setActiveTabTitle(document, collection.title);
+    setActiveTabTitle(collection.title);
 
     return (
         <Page
