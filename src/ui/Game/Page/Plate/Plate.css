@@ -1,4 +1,4 @@
-div.game-plate {
+.sbs-gaming div.game-plate {
     display: flex;
     gap: 2rem;
     flex-wrap: wrap;

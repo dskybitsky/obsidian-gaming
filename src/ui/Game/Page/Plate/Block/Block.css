@@ -1,4 +1,4 @@
-div.game-page-plate-details-block {
+.sbs-gaming div.game-page-plate-details-block {
     margin-block-end: 1rem;
     display: flex;
     flex-wrap: wrap;
@@ -6,10 +6,10 @@ div.game-page-plate-details-block {
     gap: 0.3rem;
 }
 
-div.game-page-plate-details-block > span:first-child {
+.sbs-gaming div.game-page-plate-details-block > span:first-child {
     font-weight: bold;
 }
 
-.break {
+.sbs-gaming .break {
     width: 100%;
 }

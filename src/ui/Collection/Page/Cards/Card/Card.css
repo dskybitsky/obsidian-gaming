@@ -1,4 +1,4 @@
-div.collection-card {
+.sbs-gaming div.collection-card {
     display: flex;
     flex-direction: column;
     max-width: 200px;
@@ -6,7 +6,7 @@ div.collection-card {
     align-items: center;
 }
 
-div.collection-card .title {
+.sbs-gaming div.collection-card .title {
     line-height: 1.5;
     padding: 2px 4px;
     text-align: center;

@@ -1,7 +1,7 @@
-div.game-page-plate-thumb {
+.sbs-gaming div.game-page-plate-thumb {
     max-width: 120px;
 }
 
-div.game-page-plate-thumb img {
+.sbs-gaming div.game-page-plate-thumb img {
     border-radius: 6px !important;
 }
